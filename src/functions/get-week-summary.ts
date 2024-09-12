@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { db } from '../db'
 import { goalCompletions, goals } from '../db/schema'
-import { and, count, eq, gte, lte, sql } from 'drizzle-orm'
+import { and, count, desc, eq, gte, lte, sql } from 'drizzle-orm'
 
 export async function getWeekSummary() {
   const firstDayOfWeek = dayjs().startOf('week').toDate()
@@ -55,6 +55,7 @@ export async function getWeekSummary() {
       })
       .from(goalscompletedInWeek)
       .groupBy(goalscompletedInWeek.completedAtDate)
+      .orderBy(desc(goalscompletedInWeek.completedAtDate))
   )
 
   type GoalsPerDay = Record<
